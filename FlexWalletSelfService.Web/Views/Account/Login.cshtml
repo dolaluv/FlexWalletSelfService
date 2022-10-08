@@ -1,22 +1,22 @@
-﻿
-
+﻿@using FlexWalletSelfService.Web.Helpers
+@model LoginModel
 <div class="text-center">
     <h1 class="h4 text-gray-900 mb-4">Account Login</h1>
 </div>
-<form class="user">
+<form asp-controller="Account" asp-action="Login" method="post">
     
     <div class="form-group">
-        <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-               placeholder="Email Address">
+        <input asp-for="Email" type="email" class="form-control form-control-user" id="exampleInputEmail"
+               placeholder="Email Address" required>
     </div>
     <div class="form-group">
-        <input type="password" class="form-control form-control-user"
-               id="exampleInputPassword" placeholder="Password">
+        <input asp-for="Password" type="password" class="form-control form-control-user"
+               id="exampleInputPassword" placeholder="Password" required>
     </div>
    
-    <a href="login.html" class="btn btn-primary btn-user btn-block">
+    <input  type="submit" class="btn btn-primary btn-user btn-block">
         Login 
-    </a>
+    </input>
     <hr>
     <br />
     <br />

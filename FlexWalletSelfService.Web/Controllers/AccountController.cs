@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlexWalletSelfService.Web.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlexWalletSelfService.Web.Controllers
 {
@@ -10,6 +11,11 @@ namespace FlexWalletSelfService.Web.Controllers
             return View();
         }
         public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(LoginModel loginModel)
         {
             return View();
         }
