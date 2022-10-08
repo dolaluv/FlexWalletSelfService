@@ -18,7 +18,12 @@ namespace FlexWalletSelfService.Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult FundTransfer()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult FundTransfer(string name)
         {
             return View();
         }
