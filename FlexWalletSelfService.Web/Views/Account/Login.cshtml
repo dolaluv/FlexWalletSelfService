@@ -1,5 +1,7 @@
 ﻿@using FlexWalletSelfService.Web.Abstractions.Models
 @using FlexWalletSelfService.Web.Helpers
+ 
+
 @model WalletUserLogin
 <div class="text-center">
     <h1 class="h4 text-gray-900 mb-4">Account Login</h1>
@@ -15,10 +17,10 @@
                id="exampleInputPassword" placeholder="Password" required>
     </div>
    
-    <input  type="submit" class="btn btn-primary btn-user btn-block">
-        Login 
-    </input>
+    <input value="Login"  type="submit" class="btn btn-primary btn-user btn-block">
+       
     <hr>
+    <p><ccenter> @ViewBag.Message</ccenter></p>
     <br />
     <br />
     <br />

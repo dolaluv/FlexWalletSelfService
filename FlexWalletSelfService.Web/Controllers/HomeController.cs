@@ -19,6 +19,7 @@ namespace FlexWalletSelfService.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var tok = HttpContext.Session.GetString("Token");
             await this.walletTransactionServices.GetAccountBalance("");
             return View();
         }

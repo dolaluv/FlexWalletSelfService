@@ -22,11 +22,13 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 var client = httpClientFactory.CreateClient();
                 var json = JsonConvert.SerializeObject(walletUserLogin);
                 HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("/api/Account/Login", contentPost);
+                HttpResponseMessage response = await client.PostAsync("Account/Login", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
                     
-                    statusMessage =await response.Content.ReadAsAsync<StatusMessage>();
+                    var responseModel =await response.Content.ReadAsAsync<ApiAuthResponseModel>();
+                    statusMessage = responseModel.Data;
+
                 }
                 else
                 {
@@ -35,6 +37,7 @@ namespace FlexWalletSelfService.Web.Services.DataServices
             }
             catch(Exception ex)
             {
+
 
             }
             return statusMessage;
@@ -47,7 +50,7 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 var client = httpClientFactory.CreateClient();
                 var json = JsonConvert.SerializeObject(walletUserRegister);
                 HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("/api/Account/Register", contentPost);
+                HttpResponseMessage response = await client.PostAsync("Account/Register", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
 
