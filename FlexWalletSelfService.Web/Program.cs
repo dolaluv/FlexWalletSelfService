@@ -13,6 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountServices, AccountServices>();
 builder.Services.AddScoped<IAccountDataServices, AccountDataServices>();
 
+builder.Services.AddScoped<IWalletTransactionServices, WalletTransactionServices>();
+builder.Services.AddScoped<IWalletTransactionDataServices, WalletTransactionDataServices>();
+
 builder.Services
                .AddHttpClient(String.Empty, client => client.BaseAddress = new Uri("http://localhost:5119/"));
 var app = builder.Build();
