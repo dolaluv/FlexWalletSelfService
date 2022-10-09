@@ -4,7 +4,7 @@ namespace FlexWalletSelfService.Web.Abstractions.Services.Business
 {
     public interface IWalletTransactionServices
     {
-        Task<StatusMessage> FundTransfer(WalletFundTransfer walletFundTransferDto);
+        Task<StatusMessage> FundTransfer(WalletFundTransfer walletFundTransfer);
         Task<WalletUserAccount> GetAccountBalance(string WallectAccountNumber);
     }
 }

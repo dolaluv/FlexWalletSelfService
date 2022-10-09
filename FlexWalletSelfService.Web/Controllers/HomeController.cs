@@ -1,4 +1,6 @@
-﻿using FlexWalletSelfService.Web.Models;
+﻿using FlexWalletSelfService.Web.Abstractions.Models;
+using FlexWalletSelfService.Web.Abstractions.Services.Business;
+using FlexWalletSelfService.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,15 +8,18 @@ namespace FlexWalletSelfService.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IWalletTransactionServices walletTransactionServices;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IWalletTransactionServices walletTransactionServices, ILogger<HomeController> logger)
         {
-            _logger = logger;
+            this.walletTransactionServices = walletTransactionServices ?? throw new ArgumentNullException(nameof(walletTransactionServices));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await this.walletTransactionServices.GetAccountBalance("");
             return View();
         }
 
@@ -23,8 +28,9 @@ namespace FlexWalletSelfService.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult FundTransfer(string name)
+        public async Task<IActionResult> FundTransfer(WalletFundTransfer walletFund)
         {
+            await this.walletTransactionServices.FundTransfer(walletFund);
             return View();
         }
 
