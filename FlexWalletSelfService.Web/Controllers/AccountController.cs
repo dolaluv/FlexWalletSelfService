@@ -1,4 +1,6 @@
-﻿using FlexWalletSelfService.Web.Helpers;
+﻿using FlexWalletSelfService.Web.Abstractions.Models;
+using FlexWalletSelfService.Web.Abstractions.Services.Business;
+using FlexWalletSelfService.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -9,15 +11,21 @@ namespace FlexWalletSelfService.Web.Controllers
 {
     public class AccountController : Controller
     {
-        readonly IHttpClientFactory httpClientFactory;
+        readonly IAccountServices accountServices;
 
-        public AccountController(IHttpClientFactory httpClientFactory)
+        public AccountController(IAccountServices accountServices)
         {
-            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.accountServices = accountServices ?? throw new ArgumentNullException(nameof(accountServices));
         }
 
         public IActionResult Register()
         {
+            return View();
+        }
+        [HttpPost]
+        public async  Task<IActionResult> Register(WalletUserRegister walletUserRegister)
+        {
+            var result = await this.accountServices.WalletRegistration(walletUserRegister);
             return View();
         }
         public IActionResult Login()
@@ -25,30 +33,16 @@ namespace FlexWalletSelfService.Web.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(WalletUserLogin loginModel)
         {
-           
 
-            await  ApiCall(loginModel);
+          var result = await this.accountServices.WalletLogin(loginModel);
+          
 
 
             return View();
         }
-        public async Task ApiCall(LoginModel loginModel)
-        {
-            //HttpClient client = new HttpClient();//http://localhost:5119 
-            var client = httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("http://localhost:5119");
-            var json = JsonConvert.SerializeObject(loginModel);
-            HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("/api/Account/Login", contentPost);
-            if (response.IsSuccessStatusCode)
-            {
-              var  events = await response.Content.ReadAsStringAsync();
-            }
-           
-
-        }
+      
 
     }
 }
