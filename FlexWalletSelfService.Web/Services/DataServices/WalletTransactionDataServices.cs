@@ -17,20 +17,22 @@ namespace FlexWalletSelfService.Web.Services.DataServices
 
         public async Task<WalletUserAccount> Balance(string WallectAccountNumber)
         {
+            WalletUserAccount walletUserAccount = new();
             try
             {
                 var client = httpClientFactory.CreateClient(); 
-                HttpResponseMessage response = await client.GetAsync("/api/Account/Login");
+                HttpResponseMessage response = await client.GetAsync("/api/FundTransaction/GetWallectAccountBalanceByAccountNumber");
                 if (response.IsSuccessStatusCode)
                 {
-                    var events = await response.Content.ReadAsStringAsync();
+                    walletUserAccount = await response.Content.ReadAsAsync<WalletUserAccount>();
+                   
                 }
             }
             catch (Exception ex)
             {
 
             }
-            return new WalletUserAccount();
+            return walletUserAccount;
         }
 
         public async Task<StatusMessage> Transfer(WalletFundTransfer walletFundTransfer)
@@ -40,10 +42,10 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 var client = httpClientFactory.CreateClient();
                 var json = JsonConvert.SerializeObject(walletFundTransfer);
                 HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("/api/Account/Login", contentPost);
+                HttpResponseMessage response = await client.PostAsync("/api/FundTransaction/FundTransfer", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
-                    var events = await response.Content.ReadAsStringAsync();
+                    statusMessage = await response.Content.ReadAsAsync<StatusMessage>();
                 }
             }
             catch (Exception ex)

@@ -25,7 +25,12 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 HttpResponseMessage response = await client.PostAsync("/api/Account/Login", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
-                    var events = await response.Content.ReadAsStringAsync();
+                    
+                    statusMessage =await response.Content.ReadAsAsync<StatusMessage>();
+                }
+                else
+                {
+                    statusMessage.Message = response.ReasonPhrase;
                 }
             }
             catch(Exception ex)
@@ -45,12 +50,13 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 HttpResponseMessage response = await client.PostAsync("/api/Account/Register", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
-                    
-                    var events = await response.Content.ReadAsStringAsync();
+
+                    statusMessage = await response.Content.ReadAsAsync<StatusMessage>();
                 }
                 else
                 {
-                    var events = await response.Content.ReadAsStringAsync();
+                    statusMessage.Message = response.ReasonPhrase;
+                    var result = await response.Content.ReadAsStringAsync();
                 }
             }
             catch (Exception ex)
