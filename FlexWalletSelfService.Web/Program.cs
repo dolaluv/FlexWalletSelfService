@@ -1,3 +1,4 @@
+using FlexWalletSelfService.Web.Abstractions.Model;
 using FlexWalletSelfService.Web.Abstractions.Services.Business;
 using FlexWalletSelfService.Web.Abstractions.Services.Data;
 using FlexWalletSelfService.Web.Services.BusinessServices;
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+AppSettings appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+builder.Services.AddSingleton(appSettings);
 
 //builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>();
 builder.Services.AddScoped<IAccountServices, AccountServices>();
@@ -22,7 +25,7 @@ builder.Services.AddSession(options => {
 });
 
 builder.Services
-               .AddHttpClient(String.Empty, client => client.BaseAddress = new Uri("http://localhost:5119/api/"));
+               .AddHttpClient(String.Empty, client => client.BaseAddress = new Uri(appSettings.BaseUrl));
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
