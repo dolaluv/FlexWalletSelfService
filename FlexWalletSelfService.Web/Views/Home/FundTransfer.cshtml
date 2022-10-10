@@ -1,6 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using FlexWalletSelfService.Web.Abstractions.Models
+@model WalletFundTransfer
 <div class="container-fluid">
 
     <!-- Page Heading -->
@@ -20,7 +19,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0  text-primary">Earnings Overview</h6>
+                    <h6 class="m-0  text-primary"> <p><ccenter> @ViewBag.Message</ccenter></p></h6>
                     <div class="dropdown no-arrow">
                     </div>
                 </div>
@@ -35,24 +34,24 @@
                             <option value="3">Three</option>
                         </select>
                         <span class="">&nbsp;&nbsp;&nbsp;</span>
-                        <input type="text" class="form-control" placeholder="Enter Amount" aria-label="Server">
+                            <input name="TransactionAmount" type="number" class="form-control" placeholder="Enter Amount" aria-label="Server">
                     </div>
                     <br />
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Enter Account Number" aria-label="Username">
+                        <input name="TransactionAccount" type="text" class="form-control" placeholder="Enter Account Number" aria-label="Username">
                         <span class="">&nbsp;&nbsp;&nbsp;</span>
-                        <select class="form-control" aria-label="Server">
+                            <select name="TransactionBankName" class="form-control" aria-label="Server">
                             <option selected>Select Bank</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="Gt Bank">Gt Bank</option>
+                            <option value="Zenith Bank">Zenith Bank</option>
+                            <option value="First Bank">First Bank</option>
                         </select>
                     </div>
                     <br />
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Enter Account Name" aria-label="Username">
+                            <input name="TransactionAccountName" type="text" class="form-control" placeholder="Enter Account Name" aria-label="Username">
                         <span class="">&nbsp;&nbsp;&nbsp;</span>
-                        <input type="text" class="form-control" placeholder="VAT" aria-label="Server">
+                        <input disabled value="5%" type="text" class="form-control" placeholder="VAT" aria-label="Server">
                     </div>
                     <br />
 

@@ -37,7 +37,18 @@ namespace FlexWalletSelfService.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FundTransfer(WalletFundTransfer walletFund)
         {
-            await this.walletTransactionServices.FundTransfer(walletFund, HttpContext.Session.GetString("Token"));
+            var TokenPayLoad = TokeDecode.ProcessToken(HttpContext.Session.GetString("Token"));
+            if (TokenPayLoad == null || TokenPayLoad?.AccountNumber == null)
+            {
+                return RedirectToAction(actionName: "Login", controllerName: "Account");
+            }
+            walletFund.AccountmNumber = TokenPayLoad.AccountNumber;
+            walletFund.TransactionType = "Fund Transfer";
+            ViewBag.Message = string.Empty;
+           var result = await this.walletTransactionServices.FundTransfer(walletFund, HttpContext.Session.GetString("Token"));
+            ViewBag.Message = result.Status ? "Fund Transfer was Successfully" : result.Message;
+
+
             return View();
         }
 

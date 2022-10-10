@@ -16,7 +16,7 @@ namespace FlexWalletSelfService.Web.Abstractions.Models
         public string TransactionAccountName { get; set; }
         public string TransactionBankName { get; set; }
         public string TransactionStatus { get; set; }
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = "Admin";
 
     }
 }

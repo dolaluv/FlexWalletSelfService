@@ -54,7 +54,8 @@ namespace FlexWalletSelfService.Web.Services.DataServices
                 if (response.IsSuccessStatusCode)
                 {
 
-                    statusMessage = await response.Content.ReadAsAsync<StatusMessage>();
+                    var responseModel = await response.Content.ReadAsAsync<ApiAuthResponseModel>();
+                    statusMessage = responseModel.Data;
                 }
                 else
                 {

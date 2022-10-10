@@ -37,6 +37,11 @@ namespace FlexWalletSelfService.Web.Controllers
         }
         public IActionResult Login()
         {
+            var TokenPayLoad = TokeDecode.ProcessToken(HttpContext.Session.GetString("Token"));
+            if (TokenPayLoad != null || TokenPayLoad?.AccountNumber != null)
+            {
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
+            }
             return View();
         }
         [HttpPost]

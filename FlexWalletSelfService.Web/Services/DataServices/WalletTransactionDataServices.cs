@@ -45,14 +45,16 @@ namespace FlexWalletSelfService.Web.Services.DataServices
         public async Task<StatusMessage> Transfer(WalletFundTransfer walletFundTransfer, string token)
         {
             try
-            {
+            { 
                 var client = httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
                 var json = JsonConvert.SerializeObject(walletFundTransfer);
                 HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync("FundTransaction/FundTransfer", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
-                    statusMessage = await response.Content.ReadAsAsync<StatusMessage>();
+                    var responseModel = await response.Content.ReadAsAsync<ApiAuthResponseModel>();
+                    statusMessage = responseModel.Data;
                 }
             }
             catch (Exception ex)
