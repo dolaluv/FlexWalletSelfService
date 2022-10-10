@@ -1,7 +1,9 @@
 ﻿using FlexWalletSelfService.Web.Abstractions.Models;
 using FlexWalletSelfService.Web.Abstractions.Services.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
+using System.Web;
 
 namespace FlexWalletSelfService.Web.Services.DataServices
 {
@@ -9,19 +11,24 @@ namespace FlexWalletSelfService.Web.Services.DataServices
     {
         readonly IHttpClientFactory httpClientFactory;
         StatusMessage statusMessage = new();
+        ISession session;
 
         public WalletTransactionDataServices(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+           
         }
 
-        public async Task<WalletUserAccount> Balance(string WallectAccountNumber)
+        public async Task<WalletUserAccount> Balance(string WallectAccountNumber, string token)
         {
             WalletUserAccount walletUserAccount = new();
             try
-            {
-                var client = httpClientFactory.CreateClient(); 
-                HttpResponseMessage response = await client.GetAsync("/api/FundTransaction/GetWallectAccountBalanceByAccountNumber");
+            {//
+                
+                var client = httpClientFactory.CreateClient();
+                
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                HttpResponseMessage response = await client.GetAsync($"FundTransaction/GetWallectAccountBalanceByAccountNumber?wlletAccountNumber={WallectAccountNumber}");
                 if (response.IsSuccessStatusCode)
                 {
                     walletUserAccount = await response.Content.ReadAsAsync<WalletUserAccount>();
@@ -35,14 +42,14 @@ namespace FlexWalletSelfService.Web.Services.DataServices
             return walletUserAccount;
         }
 
-        public async Task<StatusMessage> Transfer(WalletFundTransfer walletFundTransfer)
+        public async Task<StatusMessage> Transfer(WalletFundTransfer walletFundTransfer, string token)
         {
             try
             {
                 var client = httpClientFactory.CreateClient();
                 var json = JsonConvert.SerializeObject(walletFundTransfer);
                 HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("/api/FundTransaction/FundTransfer", contentPost);
+                HttpResponseMessage response = await client.PostAsync("FundTransaction/FundTransfer", contentPost);
                 if (response.IsSuccessStatusCode)
                 {
                     statusMessage = await response.Content.ReadAsAsync<StatusMessage>();

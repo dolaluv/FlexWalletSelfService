@@ -1,5 +1,6 @@
 ﻿using FlexWalletSelfService.Web.Abstractions.Models;
 using FlexWalletSelfService.Web.Abstractions.Services.Business;
+using FlexWalletSelfService.Web.Helpers;
 using FlexWalletSelfService.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -19,9 +20,14 @@ namespace FlexWalletSelfService.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tok = HttpContext.Session.GetString("Token");
-            await this.walletTransactionServices.GetAccountBalance("");
-            return View();
+            
+            var TokenPayLoad = TokeDecode.ProcessToken(HttpContext.Session.GetString("Token"));
+            if(TokenPayLoad == null || TokenPayLoad?.AccountNumber == null)
+            {
+                return RedirectToAction(actionName: "Login", controllerName: "Account");
+            }
+           var LoginUser =  await this.walletTransactionServices.GetAccountBalance(TokenPayLoad.AccountNumber, HttpContext.Session.GetString("Token"));
+            return View(LoginUser);
         }
 
         public IActionResult FundTransfer()
@@ -31,7 +37,7 @@ namespace FlexWalletSelfService.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FundTransfer(WalletFundTransfer walletFund)
         {
-            await this.walletTransactionServices.FundTransfer(walletFund);
+            await this.walletTransactionServices.FundTransfer(walletFund, HttpContext.Session.GetString("Token"));
             return View();
         }
 
@@ -40,5 +46,6 @@ namespace FlexWalletSelfService.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+       
     }
 }

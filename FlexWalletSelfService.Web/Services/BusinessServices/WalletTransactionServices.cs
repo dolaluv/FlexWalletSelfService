@@ -13,14 +13,14 @@ namespace FlexWalletSelfService.Web.Services.BusinessServices
             this.walletTransactionDataServices = walletTransactionDataServices ?? throw new ArgumentNullException(nameof(walletTransactionDataServices));
         }
 
-        public async Task<StatusMessage> FundTransfer(WalletFundTransfer walletFundTransfer)
+        public async Task<StatusMessage> FundTransfer(WalletFundTransfer walletFundTransfer, string token)
         {
-            return await this.walletTransactionDataServices.Transfer(walletFundTransfer);
+            return await this.walletTransactionDataServices.Transfer(walletFundTransfer, token);
         }
 
-        public async Task<WalletUserAccount> GetAccountBalance(string WallectAccountNumber)
+        public async Task<WalletUserAccount> GetAccountBalance(string WallectAccountNumber, string token)
         {
-            return await this.walletTransactionDataServices.Balance(WallectAccountNumber);
+            return await this.walletTransactionDataServices.Balance(WallectAccountNumber, token);
         }
     }
 }
