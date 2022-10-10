@@ -51,6 +51,14 @@ namespace FlexWalletSelfService.Web.Controllers
 
             return View();
         }
+        
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction(actionName: "Login", controllerName: "Account");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
